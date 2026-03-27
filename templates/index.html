@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="card-grid">
+    <div class="card">
+        <h2>Total Bikes</h2>
+        <p class="big-number">{{ bikes|length }}</p>
+    </div>
+    <div class="card">
+        <h2>Total Records</h2>
+        <p class="big-number">{{ records|length }}</p>
+    </div>
+    <div class="card">
+        <h2>Due Soon / Overdue</h2>
+        <p class="big-number">{{ due_soon_records|length }}</p>
+    </div>
+</section>
+
+<section class="card">
+    <h2>Due Soon or Overdue Maintenance</h2>
+    {% if due_soon_records %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Bike</th>
+                    <th>Task</th>
+                    <th>Service Date</th>
+                    <th>Next Due</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in due_soon_records %}
+                <tr>
+                    <td>{{ record.bike.display_name() }}</td>
+                    <td>{{ record.maintenance_type }}</td>
+                    <td>{{ record.service_date }}</td>
+                    <td>
+                        {% if record.next_due_date %}{{ record.next_due_date }}<br>{% endif %}
+                        {% if record.next_due_mileage %}Mileage: {{ record.next_due_mileage }}{% endif %}
+                    </td>
+                    <td>
+                        {% if record.is_overdue(today) %}
+                            <span class="badge overdue">Overdue</span>
+                        {% else %}
+                            <span class="badge due-soon">Due Soon</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No items are currently due soon.</p>
+    {% endif %}
+</section>
+{% endblock %}

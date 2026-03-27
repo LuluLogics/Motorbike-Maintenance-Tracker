@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Record | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <h2>Edit Maintenance Record</h2>
+    <form method="POST">
+        <label>Bike</label>
+        <select name="bike_id" required>
+            {% for bike in bikes %}
+                <option value="{{ bike.id }}" {% if record.bike_id == bike.id %}selected{% endif %}>
+                    {{ bike.display_name() }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Maintenance Type</label>
+        <input type="text" name="maintenance_type" value="{{ record.maintenance_type }}" required>
+
+        <label>Service Date</label>
+        <input type="date" name="service_date" value="{{ record.service_date }}" required>
+
+        <label>Mileage</label>
+        <input type="number" name="mileage" value="{{ record.mileage }}" required>
+
+        <label>Cost</label>
+        <input type="number" name="cost" step="0.01" value="{{ record.cost if record.cost is not none else '' }}">
+
+        <label>Notes</label>
+        <textarea name="notes" rows="4">{{ record.notes or '' }}</textarea>
+
+        <label>Next Due</label>
+        <input type="date" name="next_due_date" value="{{ record.next_due_date if record.next_due_date else '' }}">
+
+        <label>Next Due Mileage</label>
+        <input type="number" name="next_due_mileage" value="{{ record.next_due_mileage if record.next_due_mileage else '' }}">
+
+        <button type="submit" class="button">Update Record</button>
+    </form>
+</section>
+{% endblock %}

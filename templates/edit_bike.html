@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Bike | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <h2>Edit Bike</h2>
+    <form method="POST">
+        <label>Make</label>
+        <input type="text" name="make" value="{{ bike.make }}" required>
+
+        <label>Model</label>
+        <input type="text" name="model" value="{{ bike.model }}" required>
+
+        <label>Year</label>
+        <input type="number" name="year" value="{{ bike.year }}" required>
+
+        <label>Nickname</label>
+        <input type="text" name="nickname" value="{{ bike.nickname or '' }}">
+
+        <label>Current Mileage</label>
+        <input type="number" name="current_mileage" value="{{ bike.current_mileage }}" required>
+
+        <button type="submit" class="button">Update Bike</button>
+    </form>
+</section>
+{% endblock %}

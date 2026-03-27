@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Add Record | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <h2>Add Maintenance Record</h2>
+    <form method="POST">
+        <label>Bike</label>
+        <select name="bike_id" required>
+            {% for bike in bikes %}
+                <option value="{{ bike.id }}">{{ bike.display_name() }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Maintenance Type</label>
+        <input type="text" name="maintenance_type" placeholder="Oil change" required>
+
+        <label>Service Date</label>
+        <input type="date" name="service_date" required>
+
+        <label>Mileage</label>
+        <input type="number" name="mileage" required>
+
+        <label>Cost</label>
+        <input type="number" name="cost" step="0.01">
+
+        <label>Notes</label>
+        <textarea name="notes" rows="4"></textarea>
+
+        <label>Next Due Date</label>
+        <input type="date" name="next_due_date">
+
+        <label>Next Due Mileage</label>
+        <input type="number" name="next_due_mileage">
+
+        <button type="submit" class="button">Save Record</button>
+    </form>
+</section>
+{% endblock %}

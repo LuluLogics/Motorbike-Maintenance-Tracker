@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Bikes | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h2>Your Bikes</h2>
+    <a class="button" href="{{ url_for('add_bike') }}">Add Bike</a>
+</section>
+
+<section class="card">
+    {% if bikes %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Nickname</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Current Mileage</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bike in bikes %}
+                <tr>
+                    <td>{{ bike.nickname or "-" }}</td>
+                    <td>{{ bike.make }}</td>
+                    <td>{{ bike.model }}</td>
+                    <td>{{ bike.year }}</td>
+                    <td>{{ bike.current_mileage }}</td>
+                    <td class="actions">
+                        <a class="button secondary" href="{{ url_for('edit_bike', bike_id=bike.id) }}">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_bike', bike_id=bike.id) }}" class="inline-form">
+                            <button type="submit" class="button danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No bikes added yet.</p>
+    {% endif %}
+</section>
+{% endblock %}

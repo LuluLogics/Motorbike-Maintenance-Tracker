@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Records | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="page-header">
+    <h2>Maintenance Records</h2>
+    <a class="button" href="{{ url_for('add_record') }}">Add Record</a>
+</section>
+
+<section class="card form-card">
+    <h3>Filter Records</h3>
+    <form method="GET" class="filter-form">
+        <label>Bike</label>
+        <select name="bike_id">
+            <option value="">All Bikes</option>
+            {% for bike in bikes %}
+                <option value="{{ bike.id }}" {% if selected_bike_id == bike.id %}selected{% endif %}>
+                    {{ bike.display_name() }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <label>Maintenance Type</label>
+        <input type="text" name="maintenance_type" value="{{ selected_maintenance_type or '' }}">
+
+        <button type="submit" class="button">Apply Filter</button>
+    </form>
+</section>
+
+<section class="card">
+    {% if records %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Bike</th>
+                    <th>Task</th>
+                    <th>Service Date</th>
+                    <th>Mileage</th>
+                    <th>Cost</th>
+                    <th>Next Due</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.bike.display_name() }}</td>
+                    <td>{{ record.maintenance_type }}</td>
+                    <td>{{ record.service_date }}</td>
+                    <td>{{ record.mileage }}</td>
+                    <td>{% if record.cost is not none %}£{{ "%.2f"|format(record.cost) }}{% else %}-{% endif %}</td>
+                    <td>
+                        {% if record.next_due_date %}Date: {{ record.next_due_date }}<br>{% endif %}
+                        {% if record.next_due_mileage %}Mileage: {{ record.next_due_mileage }}{% endif %}
+                    </td>
+                    <td>
+                        {% if record.is_overdue() %}
+                            <span class="badge overdue">Overdue</span>
+                        {% elif record.is_due_soon() %}
+                            <span class="badge due-soon">Due Soon</span>
+                        {% else %}
+                            <span class="badge ok">OK</span>
+                        {% endif %}
+                    </td>
+                    <td class="actions">
+                        <a class="button secondary" href="{{ url_for('edit_record', record_id=record.id) }}">Edit</a>
+                        <form method="POST" action="{{ url_for('delete_record', record_id=record.id) }}" class="inline-form">
+                            <button type="submit" class="button danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No records found.</p>
+    {% endif %}
+</section>
+{% endblock %}

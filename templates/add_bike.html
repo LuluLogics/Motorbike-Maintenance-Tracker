@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Add Bike | Motorbike Maintenance Tracker{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <h2>Add Bike</h2>
+    <form method="POST">
+        <label>Make</label>
+        <input type="text" name="make" required>
+
+        <label>Model</label>
+        <input type="text" name="model" required>
+
+        <label>Year</label>
+        <input type="number" name="year" required>
+
+        <label>Nickname</label>
+        <input type="text" name="nickname">
+
+        <label>Current Mileage</label>
+        <input type="number" name="current_mileage" required>
+
+        <button type="submit" class="button">Save Bike</button>
+    </form>
+</section>
+{% endblock %}
